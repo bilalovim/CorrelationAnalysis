@@ -11,7 +11,7 @@
     
     <Window.Resources>
         <sys:Double x:Key="NameWidth">120</sys:Double>
-        <sys:Double x:Key="ValueWidth">60</sys:Double>
+        <sys:Double x:Key="ValueWidth">160</sys:Double>
 
         <sys:Double x:Key="NameWidth2">260</sys:Double>
         <sys:Double x:Key="ValueWidth2">60</sys:Double>
@@ -36,13 +36,18 @@
 
             <StackPanel Margin="5,5,0,0" Orientation="Vertical">
                 <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
-                    <TextBlock Text="Генератор сигнала A"></TextBlock>
+                    <TextBlock Text="Сигнал A"></TextBlock>
                 </Border>
 
                 <StackPanel Margin="3" Orientation="Horizontal">
-                    <TextBlock  Width="{StaticResource NameWidth}" Text="Тип сигнала"/>
+                    <TextBlock  Width="{StaticResource NameWidth}" Text="Источник"/>
 
-                    <ComboBox Width="{StaticResource ValueWidth}"/>
+                    <ComboBox ItemsSource="{Binding SourceDatas, Mode=OneWay}"
+                              DisplayMemberPath="NameSource"
+                              SelectedValue="{Binding SelectedTypeSource}"
+                              SelectedValuePath="TypeSource"
+                              Width="{StaticResource ValueWidth}"/>
+                    
                 </StackPanel>
 
                 <StackPanel Margin="3" Orientation="Horizontal">
@@ -64,11 +69,11 @@
 
             <StackPanel Margin="5,5,0,0" Orientation="Vertical">
                 <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
-                    <TextBlock Text="Генератор сигнала B"></TextBlock>
+                    <TextBlock Text="Сигнал B"></TextBlock>
                 </Border>
 
                 <StackPanel Margin="3" Orientation="Horizontal">
-                    <TextBlock  Width="{StaticResource NameWidth}" Text="Тип сигнала"/>
+                    <TextBlock  Width="{StaticResource NameWidth}" Text="Источник"/>
 
                     <ComboBox Width="{StaticResource ValueWidth}"/>
                 </StackPanel>
@@ -117,7 +122,7 @@
 
         </StackPanel>
         
-        <Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Content="Запуск имитации сигналов"/>
+        <Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Content="Запуск имитации сигналов" Command="{Binding CommandStartCalc}"/>
 
     </Grid>
 </Window>
