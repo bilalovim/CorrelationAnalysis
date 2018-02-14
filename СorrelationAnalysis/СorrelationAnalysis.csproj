@@ -55,6 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoolToVisibilityConverter.cs" />
+    <Compile Include="ClassConsts.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="RdCType.cs" />
+    <Compile Include="RdRType.cs" />
+    <Compile Include="SourceData.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -67,6 +73,7 @@
     <Compile Include="ClassGetDataFromFile.cs" />
     <Compile Include="ClassGetDataFromFunc.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="EnumTypeSource.cs" />
     <Compile Include="IGetData.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
