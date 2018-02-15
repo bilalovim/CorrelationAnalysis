@@ -61,6 +61,7 @@
     <Compile Include="RdCType.cs" />
     <Compile Include="RdRType.cs" />
     <Compile Include="SourceData.cs" />
+    <Compile Include="WrRType.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

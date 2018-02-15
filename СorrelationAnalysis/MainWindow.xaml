@@ -7,6 +7,7 @@
         xmlns:src="clr-namespace:СorrelationAnalysis"
         mc:Ignorable="d"
         Title="Сorrelation analysis" Height="700" Width="800"
+        WindowStartupLocation="CenterScreen"
         FontSize="14"
         ResizeMode="NoResize">
     
@@ -131,7 +132,6 @@
 
         </StackPanel>
 
-
         <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical">
             <StackPanel Margin="5,5,0,0" Orientation="Vertical">
                 <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
@@ -162,12 +162,21 @@
                     <TextBlock  Width="{StaticResource NameWidth2}" TextAlignment="Right" Text="T = "/>
                     <TextBox Width="{StaticResource ValueWidth2}" Text="{Binding Main_T, FallbackValue=0}"/>
                 </StackPanel>
+
+                <StackPanel Margin="3" Orientation="Horizontal">
+                    <TextBlock  Width="{StaticResource NameWidth2}" TextAlignment="Right" Text="Pr = "/>
+                    <TextBox Width="{StaticResource ValueWidth2}" Text="{Binding Main_Pr, FallbackValue=0}"/>
+                </StackPanel>
             </StackPanel>
         
 
         </StackPanel>
+
+        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="4" Background="#80000000" Visibility="{Binding IsProcess, Converter={StaticResource BoolToVisibility}, FallbackValue=Collapsed}">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Пожалуйста, подождите..." FontSize="30" Foreground="LightGray"/>
+        </Border>
         
-        <Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Height="50" Content="Запуск имитации сигналов" Command="{Binding CommandStartCalc}" VerticalAlignment="Bottom"/>
+        <Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Height="50" Content="{Binding NameStartStop, FallbackValue=Запуск имитации сигналов}" Command="{Binding CommandStartStopCalc}" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

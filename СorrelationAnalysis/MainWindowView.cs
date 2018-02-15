@@ -3,6 +3,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace СorrelationAnalysis
 {
@@ -397,6 +402,16 @@ namespace СorrelationAnalysis
             }
         }
 
+        private string _Main_Pr;
+        public string Main_Pr
+        {
+            get { return _Main_Pr; }
+            set
+            {
+                OnPropertyMain_PrChanged(value);
+            }
+        }
+
         private void OnPropertyMain_NChanged(String _uiVal)
         {
             if (_uiVal != _Main_N)
@@ -497,8 +512,73 @@ namespace СorrelationAnalysis
             }
         }
 
+
+        private void OnPropertyMain_PrChanged(String _uiVal)
+        {
+            if (_uiVal != _Main_Pr)
+            {
+                RdCType tmp = CNS.Main_Pr;
+                var valid = Helper.InRdCType1(ref tmp, _uiVal);
+
+                if (valid)
+                {
+                    _Main_Pr = _uiVal;
+                    CNS.Main_Pr = tmp;
+                    Helper.SaveConst(CNS);
+                }
+                else
+                {
+                    OnPropertyChanged(nameof(Main_Pr));
+                }
+            }
+        }
+
         #endregion
 
+        private string _NameStartStop;
+        public string NameStartStop
+        {
+            get { return _NameStartStop; }
+            set
+            {
+                _NameStartStop = value;
+                OnPropertyChanged(nameof(NameStartStop));
+            }
+        }
+
+        private bool _IsProcess;
+        public bool IsProcess
+        {
+            get { return _IsProcess; }
+            set
+            {
+                _IsProcess = value;
+                OnPropertyChanged(nameof(IsProcess));
+            }
+        }
+
+        private CancellationTokenSource ts;
+        private CancellationToken ct;
+
+        private enum StateEnum
+        {
+            Idle,
+            Process
+        }
+
+        private string[] StateName = new[]{ "Запуск имитации сигналов", "Стоп!"};
+
+        private StateEnum _State;
+        private StateEnum State
+        {
+            get { return _State; }
+            set
+            {
+                _State = value;
+                NameStartStop = StateName[(int)value];
+                IsProcess = value == StateEnum.Process;
+            }
+        }
         public MainWindowView()
         {
             Init();
@@ -541,7 +621,10 @@ namespace СorrelationAnalysis
             _Main_m = CNS.Main_m.S;
             _Main_r = CNS.Main_r.S;
             _Main_T = CNS.Main_T.S;
+            _Main_Pr = CNS.Main_Pr.S;
             #endregion
+
+            NameStartStop = StateName[(int)State];
         }
 
         private void Init()
@@ -556,15 +639,96 @@ namespace СorrelationAnalysis
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private DelegateCommand _commandStartCalc;
-        public DelegateCommand CommandStartCalc => _commandStartCalc ?? (_commandStartCalc = new DelegateCommand(StartCalc));
+        private DelegateCommand _commandStartStopCalc;
+        public DelegateCommand CommandStartStopCalc => _commandStartStopCalc ?? (_commandStartStopCalc = new DelegateCommand(StartStopCalc));
 
-        private void StartCalc(object arg)
+        private void StartStopCalc(object arg)
         {
-            Debug.WriteLine(SignA_SelectedTypeSource);
+            switch (State)
+            {
+                case StateEnum.Idle:
+                    State = StateEnum.Process;
+                    ts = new CancellationTokenSource();
+                    ct = ts.Token;
+                    Task.Factory.StartNew(TaskCorrelation);
+                    break;
+
+                case StateEnum.Process:
+                    State = StateEnum.Idle;
+                    ts.Cancel();
+                    break;
+            }
         }
 
+        private void TaskCorrelation()
+        {
+            bool ok = true;
+            string okfilename = String.Empty;
+            IGetData SignA;
+            IGetData SignB;
+            ClassCalcCorrelation Correlation = new ClassCalcCorrelation(CNS.Main_n.V, CNS.Main_m.V, CNS.Main_r.V, CNS.Main_Pr.V);
 
+            switch (CNS.SignA_Type)
+            {
+                case EnumTypeSource.File:
+                    SignA = new ClassGetDataFromFile(CNS.SignA_FileName);
+                    break;
+
+                case EnumTypeSource.Func:
+                    SignA = new ClassGetDataFromFunc(CNS.SignA_M.V, CNS.SignA_D.V);
+                    break;
+
+                default:
+                    SignA = new ClassGetDataFromFunc(CNS.SignA_M.V, CNS.SignA_D.V);
+                    break;
+            }
+
+            switch (CNS.SignB_Type)
+            {
+                case EnumTypeSource.File:
+                    SignB = new ClassGetDataFromFile(CNS.SignB_FileName);
+                    break;
+
+                case EnumTypeSource.Func:
+                    SignB = new ClassGetDataFromFunc(CNS.SignB_M.V, CNS.SignB_D.V);
+                    break;
+
+                default:
+                    SignB = new ClassGetDataFromFunc(CNS.SignB_M.V, CNS.SignB_D.V);
+                    break;
+            }
+
+            for (int i = 0; i < CNS.Main_N.V; i++)
+            {
+                if (ct.IsCancellationRequested)
+                {
+                    ok = false;
+                    break;
+                }
+
+                Correlation.Calc(SignA.GetValue(), SignB.GetValue());
+                System.Threading.Thread.Sleep((int)CNS.Main_T.V);
+            }
+
+            if (ok)
+                okfilename = Correlation.SaveResult();
+
+            State = StateEnum.Idle;
+
+            if (ok)
+            {
+                StringBuilder sbmsg = new StringBuilder();
+                sbmsg.AppendLine("Вычисления завершены успешно!");
+                sbmsg.Append(String.Format($"Файл с результатами расчетов: {okfilename}"));
+
+                MessageBox.Show(sbmsg.ToString());
+            }
+
+            //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    State = StateEnum.Idle;
+            //}));
+        }
     }
 
 

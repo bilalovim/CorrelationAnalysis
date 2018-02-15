@@ -21,7 +21,7 @@ namespace СorrelationAnalysis
 
         public double GetValue()
         {
-            Random random = new Random();
+            Random random = new Random((int)DateTime.Now.Ticks);
             return random.NextDouble() * (MIN - MAX) + MIN;
         }
     }
