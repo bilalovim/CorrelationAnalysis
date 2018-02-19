@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace СorrelationAnalysis
 {
@@ -15,16 +13,18 @@ namespace СorrelationAnalysis
         private int r;
         private int pr;
 
+        private RdRType Amin;
+        private RdRType Amax;
+
+        private RdRType Bmin;
+        private RdRType Bmax;
+
         private List<double> ListA = new List<double>();
         private List<double> ListAr = new List<double>();
-        private List<double> ListA2 = new List<double>();
-        private List<double> ListAr2 = new List<double>();
         private List<double> ListAAr = new List<double>();
 
         private List<double> ListB = new List<double>();
         private List<double> ListBr = new List<double>();
-        private List<double> ListB2 = new List<double>();
-        private List<double> ListBr2 = new List<double>();
         private List<double> ListBBr = new List<double>();
 
         private List<double> ListAB = new List<double>();
@@ -35,49 +35,80 @@ namespace СorrelationAnalysis
 
         private string FileName => DateTime.Now.ToString("yyyyMMdd") + "_" + DateTime.Now.ToString("HHmmss") + ".csv";
 
+        private enum LevelEnum
+        {
+            Low,
+            High,
+            Ok
+        }
 
+        private string[] sLevels = new[] {"L", "H", ""};
 
-        public ClassCalcCorrelation(int _n, int _m, int _r, int _pr)
+        public ClassCalcCorrelation(int _n, int _m, int _r, int _pr, RdRType _Amin, RdRType _Amax, RdRType _Bmin, RdRType _Bmax)
         {
             n = _n;
             m = _m;
             r = _r;
             pr = _pr;
-        }
 
+            Amin = _Amin;
+            Amax = _Amax;
+            Bmin = _Bmin;
+            Bmax = _Bmax;
+        }
 
         public void Calc(double A, double B)
         {
             i++;
 
             WrRType a = new WrRType(pr);
+            string a_level;
+            
             WrRType b = new WrRType(pr);
+            string b_level = String.Empty;
+
             WrRType Rab = new WrRType(pr);
             WrRType Ra = new WrRType(pr);
             WrRType Rb = new WrRType(pr);
 
+            #region SingA
             a.V = A;
-            ListA.Add(A);
-            ListA2.Add(Math.Pow(A, 2));
+            
+            if (Amin.Ok && a.V < Amin.V)
+                a_level = sLevels[(int) LevelEnum.Low];
+            else if (Amax.Ok && a.V > Amax.V)
+                a_level = sLevels[(int)LevelEnum.High];
+            else
+                a_level = sLevels[(int)LevelEnum.Ok];
 
+            ListA.Add(A);
+            #endregion      
+
+            #region SingB
             b.V = B;
+
+            if (Bmin.Ok && b.V < Bmin.V)
+                b_level = sLevels[(int)LevelEnum.Low];
+            else if (Bmax.Ok && b.V > Bmax.V)
+                b_level = sLevels[(int)LevelEnum.High];
+            else
+                b_level = sLevels[(int)LevelEnum.Ok];
+
             ListB.Add(B);
-            ListB2.Add(Math.Pow(B, 2));
+            #endregion      
 
             ListAB.Add(A * B);
 
-            if (i >= r)
+            if (i >= r + 1)
             {
-                double Ar = ListA[i - r];
+                double Ar = ListA[i - r - 1];
 
                 ListAr.Add(Ar);
-                ListAr2.Add(Math.Pow(Ar, 2));
                 ListAAr.Add(A * Ar);
 
-                double Br = ListB[i - r];
+                double Br = ListB[i - r - 1];
 
-                ListBr.Add(Ar);
-                ListBr2.Add(Math.Pow(Br, 2));
+                ListBr.Add(Br);
                 ListBBr.Add(B * Br);
             }
 
@@ -88,8 +119,9 @@ namespace СorrelationAnalysis
                     double Av_AB = GetAv(ListAB, n);
                     double Av_A = GetAv(ListA, n);
                     double Av_B = GetAv(ListB, n);
-                    double G_A = Math.Sqrt(GetAv(ListA2, n) - Math.Pow(GetAv(ListA, n), 2));
-                    double G_B = Math.Sqrt(GetAv(ListB2, n) - Math.Pow(GetAv(ListB, n), 2));
+
+                    double G_A = GetSigma(ListA, n);
+                    double G_B = GetSigma(ListB, n);
 
                     try
                     {
@@ -106,8 +138,8 @@ namespace СorrelationAnalysis
                         #region Вычисляем автокорреляцию Ra
                         double Av_AAr = GetAv(ListAAr, n);
                         double Av_Ar = GetAv(ListAr, n);
-                        double G_Ar = Math.Sqrt(GetAv(ListAr2, n) - Math.Pow(GetAv(ListAr, n), 2));
-
+                        double G_Ar = GetSigma(ListAr, n);
+                        
                         try
                         {
                             double ra = (Av_AAr - Av_A * Av_Ar) / (G_A * G_Ar);
@@ -122,7 +154,7 @@ namespace СorrelationAnalysis
                         #region Вычисляем автокорреляцию Rb
                         double Av_BBr = GetAv(ListBBr, n);
                         double Av_Br = GetAv(ListBr, n);
-                        double G_Br = Math.Sqrt(GetAv(ListBr2, n) - Math.Pow(GetAv(ListBr, n), 2));
+                        double G_Br = GetSigma(ListBr, n);
 
                         try
                         {
@@ -139,30 +171,55 @@ namespace СorrelationAnalysis
                 }
             }
 
-            sbResult.AppendLine($"{i,-10};{a.S,-10};{b.S,-10};{Rab.S,-10};{Ra.S,-10};{Rb.S,-10}");
+            sbResult.AppendLine($"{i,-10};{a.S,-10};{a_level,-10};{b.S,-10};{b_level,-10};{Rab.S,-10};{Ra.S,-10};{Rb.S,-10}");
         }
 
-        private double GetAv(List<double> list, int k, int d = 0)
+        private double GetAv(List<double> list, int k)
         {
             double Av = 0;
-            int iAv = 0;
+            int ik = 0;
 
-            if (list.Count >= k+d)
+            if (list.Count >= k)
             {
-                for (int j = list.Count - 1 - d; j >= 0; j--)
+                for (int j = list.Count - 1; j >= 0; j--)
                 {
-                    iAv++;
+                    ik++;
                     Av = Av + list[j];
 
-                    if (iAv == k)
+                    if (ik == k)
                     {
-                        Av = Av / iAv;
+                        Av = Av / ik;
                         break;
                     }
                 }
             }
 
             return Av;
+        }
+
+        private double GetSigma(List<double> list, int k)
+        {
+            double sigma = 0.0;
+
+            if (list.Count >= k)
+            {
+                double av = GetAv(list, k);
+                int ik = 0;
+
+                for (int j = list.Count - 1; j >= 0; j--)
+                {
+                    ik++;
+                    sigma = sigma + Math.Pow((list[j] - av), 2);
+
+                    if (ik == k)
+                    {
+                        sigma = Math.Sqrt(sigma / ik);
+                        break;
+                    }
+                }
+            }
+
+            return sigma;
         }
 
         

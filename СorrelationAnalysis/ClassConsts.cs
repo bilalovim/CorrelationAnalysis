@@ -11,6 +11,8 @@ namespace СorrelationAnalysis
         public RdRType SignA_D;
         public RdRType SignA_b;
         public RdCType SignA_n;
+        public RdRType SignA_MIN;
+        public RdRType SignA_MAX;
         public string SignA_FileName;
 
         //Сигнал B
@@ -19,6 +21,8 @@ namespace СorrelationAnalysis
         public RdRType SignB_D;
         public RdRType SignB_b;
         public RdCType SignB_n;
+        public RdRType SignB_MIN;
+        public RdRType SignB_MAX;
         public string SignB_FileName;
 
         //Общие параметры
@@ -36,6 +40,8 @@ namespace СorrelationAnalysis
             SignA_D = new RdRType("0,05", 0.05, Double.MinValue, Double.MaxValue, true);
             SignA_b = new RdRType("0,05", 0.05, Double.MinValue, Double.MaxValue, true);
             SignA_n = new RdCType("0", 0, 0, int.MaxValue);
+            SignA_MIN = new RdRType("", 0, Double.MinValue, Double.MaxValue, false);
+            SignA_MAX = new RdRType("", 0, Double.MinValue, Double.MaxValue, false);
             SignA_FileName = String.Empty;
 
             SignB_Type = EnumTypeSource.Func;
@@ -43,6 +49,8 @@ namespace СorrelationAnalysis
             SignB_D = new RdRType("0,05", 0.05, Double.MinValue, Double.MaxValue, true);
             SignB_b = new RdRType("0,05", 0.05, Double.MinValue, Double.MaxValue, true);
             SignB_n = new RdCType("0", 0, 0, int.MaxValue);
+            SignB_MIN = new RdRType("", 0, Double.MinValue, Double.MaxValue, false);
+            SignB_MAX = new RdRType("", 0, Double.MinValue, Double.MaxValue, false);
             SignB_FileName = String.Empty;
 
             Main_N = new RdCType("300", 300, 0, int.MaxValue);

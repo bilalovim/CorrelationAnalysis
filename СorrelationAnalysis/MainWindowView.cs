@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace СorrelationAnalysis
 {
@@ -68,6 +66,20 @@ namespace СorrelationAnalysis
         {
             get { return _SignA_n; }
             set { OnPropertySignA_nChanged(value); }
+        }
+
+        private string _SignA_MIN;
+        public string SignA_MIN
+        {
+            get { return _SignA_MIN; }
+            set { OnPropertySignA_MINChanged(value); }
+        }
+
+        private string _SignA_MAX;
+        public string SignA_MAX
+        {
+            get { return _SignA_MAX; }
+            set { OnPropertySignA_MAXChanged(value); }
         }
 
         private string _SignA_FileName;
@@ -164,6 +176,46 @@ namespace СorrelationAnalysis
             }
         }
 
+        private void OnPropertySignA_MINChanged(String _uiVal)
+        {
+            if (_uiVal != _SignA_MIN)
+            {
+                RdRType tmp = CNS.SignA_MIN;
+                var valid = Helper.InRdRType1(ref tmp, _uiVal);
+
+                if (valid)
+                {
+                    _SignA_MIN = _uiVal;
+                    CNS.SignA_MIN = tmp;
+                    Helper.SaveConst(CNS);
+                }
+                else
+                {
+                    OnPropertyChanged(nameof(SignA_MIN));
+                }
+            }
+        }
+
+        private void OnPropertySignA_MAXChanged(String _uiVal)
+        {
+            if (_uiVal != _SignA_MAX)
+            {
+                RdRType tmp = CNS.SignA_MAX;
+                var valid = Helper.InRdRType1(ref tmp, _uiVal);
+
+                if (valid)
+                {
+                    _SignA_MAX = _uiVal;
+                    CNS.SignA_MAX = tmp;
+                    Helper.SaveConst(CNS);
+                }
+                else
+                {
+                    OnPropertyChanged(nameof(SignA_MAX));
+                }
+            }
+        }
+
         private DelegateCommand _commandSelectSignA_FileName;
         public DelegateCommand CommandSelectSignA_FileName => _commandSelectSignA_FileName ?? (_commandSelectSignA_FileName = new DelegateCommand(SelectSignA_FileName));
 
@@ -236,6 +288,20 @@ namespace СorrelationAnalysis
         {
             get { return _SignB_n; }
             set { OnPropertySignB_nChanged(value); }
+        }
+
+        private string _SignB_MIN;
+        public string SignB_MIN
+        {
+            get { return _SignB_MIN; }
+            set { OnPropertySignB_MINChanged(value); }
+        }
+
+        private string _SignB_MAX;
+        public string SignB_MAX
+        {
+            get { return _SignB_MAX; }
+            set { OnPropertySignB_MAXChanged(value); }
         }
 
         private string _SignB_FileName;
@@ -328,6 +394,46 @@ namespace СorrelationAnalysis
                 else
                 {
                     OnPropertyChanged(nameof(SignB_n));
+                }
+            }
+        }
+
+        private void OnPropertySignB_MINChanged(String _uiVal)
+        {
+            if (_uiVal != _SignB_MIN)
+            {
+                RdRType tmp = CNS.SignB_MIN;
+                var valid = Helper.InRdRType1(ref tmp, _uiVal);
+
+                if (valid)
+                {
+                    _SignB_MIN = _uiVal;
+                    CNS.SignB_MIN = tmp;
+                    Helper.SaveConst(CNS);
+                }
+                else
+                {
+                    OnPropertyChanged(nameof(SignB_MIN));
+                }
+            }
+        }
+
+        private void OnPropertySignB_MAXChanged(String _uiVal)
+        {
+            if (_uiVal != _SignB_MAX)
+            {
+                RdRType tmp = CNS.SignB_MAX;
+                var valid = Helper.InRdRType1(ref tmp, _uiVal);
+
+                if (valid)
+                {
+                    _SignB_MAX = _uiVal;
+                    CNS.SignB_MAX = tmp;
+                    Helper.SaveConst(CNS);
+                }
+                else
+                {
+                    OnPropertyChanged(nameof(SignB_MAX));
                 }
             }
         }
@@ -579,6 +685,7 @@ namespace СorrelationAnalysis
                 IsProcess = value == StateEnum.Process;
             }
         }
+
         public MainWindowView()
         {
             Init();
@@ -593,6 +700,8 @@ namespace СorrelationAnalysis
             _SignA_D = CNS.SignA_D.S;
             _SignA_b = CNS.SignA_b.S;
             _SignA_n = CNS.SignA_n.S;
+            _SignA_MIN = CNS.SignA_MIN.S;
+            _SignA_MAX = CNS.SignA_MAX.S;
             _SignA_FileName = CNS.SignA_FileName;
 
             SignA_IsFunc = CNS.SignA_Type == EnumTypeSource.Func;
@@ -609,6 +718,8 @@ namespace СorrelationAnalysis
             _SignB_D = CNS.SignB_D.S;
             _SignB_b = CNS.SignB_b.S;
             _SignB_n = CNS.SignB_n.S;
+            _SignB_MIN = CNS.SignB_MIN.S;
+            _SignB_MAX = CNS.SignB_MAX.S;
             _SignB_FileName = CNS.SignB_FileName;
 
             SignB_IsFunc = CNS.SignB_Type == EnumTypeSource.Func;
@@ -666,7 +777,7 @@ namespace СorrelationAnalysis
             string okfilename = String.Empty;
             IGetData SignA;
             IGetData SignB;
-            ClassCalcCorrelation Correlation = new ClassCalcCorrelation(CNS.Main_n.V, CNS.Main_m.V, CNS.Main_r.V, CNS.Main_Pr.V);
+            ClassCalcCorrelation Correlation = new ClassCalcCorrelation(CNS.Main_n.V, CNS.Main_m.V, CNS.Main_r.V, CNS.Main_Pr.V, CNS.SignA_MIN, CNS.SignA_MAX, CNS.SignB_MIN, CNS.SignB_MAX);
 
             switch (CNS.SignA_Type)
             {
@@ -675,11 +786,11 @@ namespace СorrelationAnalysis
                     break;
 
                 case EnumTypeSource.Func:
-                    SignA = new ClassGetDataFromFunc(CNS.SignA_M.V, CNS.SignA_D.V);
+                    SignA = new ClassGetDataFromFunc(CNS.SignA_M.V, CNS.SignA_D.V, CNS.SignA_n.V, CNS.SignA_b.V);
                     break;
 
                 default:
-                    SignA = new ClassGetDataFromFunc(CNS.SignA_M.V, CNS.SignA_D.V);
+                    SignA = new ClassGetDataFromFunc(CNS.SignA_M.V, CNS.SignA_D.V, CNS.SignA_n.V, CNS.SignA_b.V);
                     break;
             }
 
@@ -690,11 +801,11 @@ namespace СorrelationAnalysis
                     break;
 
                 case EnumTypeSource.Func:
-                    SignB = new ClassGetDataFromFunc(CNS.SignB_M.V, CNS.SignB_D.V);
+                    SignB = new ClassGetDataFromFunc(CNS.SignB_M.V, CNS.SignB_D.V, CNS.SignB_n.V, CNS.SignB_b.V);
                     break;
 
                 default:
-                    SignB = new ClassGetDataFromFunc(CNS.SignB_M.V, CNS.SignB_D.V);
+                    SignB = new ClassGetDataFromFunc(CNS.SignB_M.V, CNS.SignB_D.V, CNS.SignB_n.V, CNS.SignB_b.V);
                     break;
             }
 
@@ -730,8 +841,4 @@ namespace СorrelationAnalysis
             //}));
         }
     }
-
-
-
-
 }

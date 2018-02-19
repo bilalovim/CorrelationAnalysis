@@ -10,22 +10,26 @@
         WindowStartupLocation="CenterScreen"
         FontSize="14"
         ResizeMode="NoResize">
-    
+
     <Window.Resources>
         <sys:Double x:Key="NameWidth">120</sys:Double>
         <sys:Double x:Key="ValueWidth">160</sys:Double>
+
         <sys:Double x:Key="NameWidth2">100</sys:Double>
         <sys:Double x:Key="ValueWidth2">60</sys:Double>
+
+        <sys:Double x:Key="NameWidth3">50</sys:Double>
+        <sys:Double x:Key="ValueWidth3">70</sys:Double>
         <src:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
     </Window.Resources>
-    
+
     <Grid UseLayoutRounding="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -34,43 +38,54 @@
         </Grid.RowDefinitions>
 
         <Image Stretch="None" SnapsToDevicePixels="True" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Margin="10" Source="pack://siteoforigin:,,,/Logo.png"/>
-        
+
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
 
-            <StackPanel Margin="5,5,0,0" Orientation="Vertical">
-                <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
-                    <TextBlock Text="Сигнал A"></TextBlock>
-                </Border>
+            <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
+                <TextBlock Text="Сигнал A"></TextBlock>
+            </Border>
 
-                <StackPanel Margin="3" Orientation="Horizontal">
+            <StackPanel Margin="5,5,0,0" Orientation="Vertical" HorizontalAlignment="Left">
+
+                <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
                     <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0" Text="Источник"/>
                     <ComboBox ItemsSource="{Binding SignA_SourceDatas, Mode=OneWay}"
-                              DisplayMemberPath="NameSource"
-                              SelectedValue="{Binding SignA_SelectedTypeSource}"
-                              SelectedValuePath="TypeSource"
-                              Width="{StaticResource ValueWidth}"/>
+                		DisplayMemberPath="NameSource"
+                		SelectedValue="{Binding SignA_SelectedTypeSource}"
+                		SelectedValuePath="TypeSource"
+                		Width="{StaticResource ValueWidth}"/>
 
                 </StackPanel>
 
                 <StackPanel Visibility="{Binding SignA_IsFunc, Converter={StaticResource BoolToVisibility}}">
-                    <StackPanel Margin="3" Orientation="Horizontal">
-                        <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0" Text="M = "/>
-                        <TextBox  Width="{StaticResource ValueWidth}" Text="{Binding SignA_M, FallbackValue=10}"></TextBox>
+                    <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="M = "/>
+                        <TextBox  Width="{StaticResource ValueWidth3}" Text="{Binding SignA_M, FallbackValue=10}"></TextBox>
+
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0"  Text="D = "/>
+                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignA_D, FallbackValue=20}"/>
+                    </StackPanel>
+
+
+
+                    <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="b = "/>
+                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignA_b, FallbackValue=0}"/>
+
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="n = "/>
+                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignA_n, FallbackValue=0}"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0"  Text="max = "/>
+                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignA_MAX}"/>
+                        
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="min = "/>
+                        <TextBox  Width="{StaticResource ValueWidth3}" Text="{Binding SignA_MIN}"/>
                     </StackPanel>
 
                     <StackPanel Margin="3" Orientation="Horizontal">
-                        <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0"  Text="D = "/>
-                        <TextBox Width="{StaticResource ValueWidth}" Text="{Binding SignA_D, FallbackValue=20}"/>
-                    </StackPanel>
 
-                    <StackPanel Margin="3" Orientation="Horizontal">
-                        <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0" Text="b = "/>
-                        <TextBox Width="{StaticResource ValueWidth}" Text="{Binding SignA_b, FallbackValue=0}"/>
-                    </StackPanel>
-
-                    <StackPanel Margin="3" Orientation="Horizontal">
-                        <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0" Text="n = "/>
-                        <TextBox Width="{StaticResource ValueWidth}" Text="{Binding SignA_n, FallbackValue=0}"/>
                     </StackPanel>
 
 
@@ -85,41 +100,54 @@
             </StackPanel>
 
 
-            <StackPanel Margin="5,5,0,0" Orientation="Vertical">
-                <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
-                    <TextBlock Text="Сигнал B"></TextBlock>
-                </Border>
+            <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
+                <TextBlock Text="Сигнал B"></TextBlock>
+            </Border>
 
-                <StackPanel Margin="3" Orientation="Horizontal">
+            <StackPanel Margin="5,5,0,0" Orientation="Vertical" HorizontalAlignment="Left">
+
+                <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
                     <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0" Text="Источник"/>
-
                     <ComboBox ItemsSource="{Binding SignB_SourceDatas, Mode=OneWay}"
-                              DisplayMemberPath="NameSource"
-                              SelectedValue="{Binding SignB_SelectedTypeSource}"
-                              SelectedValuePath="TypeSource"
-                              Width="{StaticResource ValueWidth}"/>
+                		DisplayMemberPath="NameSource"
+                		SelectedValue="{Binding SignB_SelectedTypeSource}"
+                		SelectedValuePath="TypeSource"
+                		Width="{StaticResource ValueWidth}"/>
+
                 </StackPanel>
 
                 <StackPanel Visibility="{Binding SignB_IsFunc, Converter={StaticResource BoolToVisibility}}">
-                    <StackPanel Margin="3" Orientation="Horizontal">
-                        <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0" Text="M = "/>
-                        <TextBox  Width="{StaticResource ValueWidth}" Text="{Binding SignB_M, FallbackValue=10}"></TextBox>
+                    <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="M = "/>
+                        <TextBox  Width="{StaticResource ValueWidth3}" Text="{Binding SignB_M, FallbackValue=10}"/>
+
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0"  Text="D = "/>
+                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_D, FallbackValue=20}"/>
+                    </StackPanel>
+
+
+
+                    <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="b = "/>
+                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_b, FallbackValue=0}"/>
+
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="n = "/>
+                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_n, FallbackValue=0}"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0"  Text="max = "/>
+                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_MAX}"/>
+                        
+                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="min = "/>
+                        <TextBox  Width="{StaticResource ValueWidth3}" Text="{Binding SignB_MIN}"/>
                     </StackPanel>
 
                     <StackPanel Margin="3" Orientation="Horizontal">
-                            <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0"  Text="D = "/>
-                            <TextBox Width="{StaticResource ValueWidth}" Text="{Binding SignB_D, FallbackValue=20}"/>
+
                     </StackPanel>
 
-                    <StackPanel Margin="3" Orientation="Horizontal">
-                            <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0" Text="b = "/>
-                            <TextBox Width="{StaticResource ValueWidth}" Text="{Binding SignB_b, FallbackValue=0}"/>
-                    </StackPanel>
 
-                    <StackPanel Margin="3" Orientation="Horizontal">
-                        <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0" Text="n = "/>
-                        <TextBox Width="{StaticResource ValueWidth}" Text="{Binding SignB_n, FallbackValue=0}"/>
-                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Margin="3" Orientation="Horizontal" Visibility="{Binding SignB_IsFile, Converter={StaticResource BoolToVisibility}}">
@@ -168,14 +196,14 @@
                     <TextBox Width="{StaticResource ValueWidth2}" Text="{Binding Main_Pr, FallbackValue=0}"/>
                 </StackPanel>
             </StackPanel>
-        
+
 
         </StackPanel>
 
         <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="4" Background="#80000000" Visibility="{Binding IsProcess, Converter={StaticResource BoolToVisibility}, FallbackValue=Collapsed}">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Пожалуйста, подождите..." FontSize="30" Foreground="LightGray"/>
         </Border>
-        
+
         <Button Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Height="50" Content="{Binding NameStartStop, FallbackValue=Запуск имитации сигналов}" Command="{Binding CommandStartStopCalc}" VerticalAlignment="Bottom"/>
 
     </Grid>
