@@ -195,5 +195,25 @@ namespace СorrelationAnalysis
 
             return Ok;
         }
+
+        public static bool CheckMinMax(RdRType min, RdRType max)
+        {
+            if (min.Ok && max.Ok)
+            {
+                if (min.V > max.V)
+                {
+                    MessageBox.Show("Ошибка ввода : минимальное значение больше максимального");
+                    return false;
+                }
+
+                if (min.V == max.V)
+                {
+                    MessageBox.Show("Ошибка ввода : максимальное значение равно максимальному");
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

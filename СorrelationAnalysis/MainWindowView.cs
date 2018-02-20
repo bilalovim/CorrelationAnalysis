@@ -182,12 +182,22 @@ namespace СorrelationAnalysis
             {
                 RdRType tmp = CNS.SignA_MIN;
                 var valid = Helper.InRdRType1(ref tmp, _uiVal);
+                
 
                 if (valid)
                 {
-                    _SignA_MIN = _uiVal;
-                    CNS.SignA_MIN = tmp;
-                    Helper.SaveConst(CNS);
+                    var valid2 = Helper.CheckMinMax(tmp, CNS.SignA_MAX);
+
+                    if (valid2)
+                    {
+                        _SignA_MIN = _uiVal;
+                        CNS.SignA_MIN = tmp;
+                        Helper.SaveConst(CNS);
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(SignA_MIN));
+                    }
                 }
                 else
                 {
@@ -205,9 +215,18 @@ namespace СorrelationAnalysis
 
                 if (valid)
                 {
-                    _SignA_MAX = _uiVal;
-                    CNS.SignA_MAX = tmp;
-                    Helper.SaveConst(CNS);
+                    var valid2 = Helper.CheckMinMax(CNS.SignA_MIN, tmp);
+
+                    if (valid2)
+                    {
+                        _SignA_MAX = _uiVal;
+                        CNS.SignA_MAX = tmp;
+                        Helper.SaveConst(CNS);
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(SignA_MAX));
+                    }
                 }
                 else
                 {
@@ -407,9 +426,18 @@ namespace СorrelationAnalysis
 
                 if (valid)
                 {
-                    _SignB_MIN = _uiVal;
-                    CNS.SignB_MIN = tmp;
-                    Helper.SaveConst(CNS);
+                    var valid2 = Helper.CheckMinMax(tmp, CNS.SignB_MAX);
+
+                    if (valid2)
+                    {
+                        _SignB_MIN = _uiVal;
+                        CNS.SignB_MIN = tmp;
+                        Helper.SaveConst(CNS);
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(SignB_MIN));
+                    }
                 }
                 else
                 {
@@ -427,9 +455,18 @@ namespace СorrelationAnalysis
 
                 if (valid)
                 {
-                    _SignB_MAX = _uiVal;
-                    CNS.SignB_MAX = tmp;
-                    Helper.SaveConst(CNS);
+                    var valid2 = Helper.CheckMinMax(CNS.SignB_MIN, tmp);
+
+                    if (valid2)
+                    {
+                        _SignB_MAX = _uiVal;
+                        CNS.SignB_MAX = tmp;
+                        Helper.SaveConst(CNS);
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(SignB_MAX));
+                    }
                 }
                 else
                 {
