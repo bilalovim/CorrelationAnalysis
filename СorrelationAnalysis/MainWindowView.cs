@@ -555,6 +555,16 @@ namespace СorrelationAnalysis
             }
         }
 
+        private string _Main_LimRab;
+        public string Main_LimRab
+        {
+            get { return _Main_LimRab; }
+            set
+            {
+                OnPropertyMain_LimRabChanged(value);
+            }
+        }
+
         private void OnPropertyMain_NChanged(String _uiVal)
         {
             if (_uiVal != _Main_N)
@@ -672,6 +682,26 @@ namespace СorrelationAnalysis
                 else
                 {
                     OnPropertyChanged(nameof(Main_Pr));
+                }
+            }
+        }
+
+        private void OnPropertyMain_LimRabChanged(String _uiVal)
+        {
+            if (_uiVal != _Main_LimRab)
+            {
+                RdRType tmp = CNS.Main_LimRab;
+                var valid = Helper.InRdRType1(ref tmp, _uiVal);
+
+                if (valid)
+                {
+                    _Main_LimRab = _uiVal;
+                    CNS.Main_LimRab = tmp;
+                    Helper.SaveConst(CNS);
+                }
+                else
+                {
+                    OnPropertyChanged(nameof(Main_LimRab));
                 }
             }
         }
@@ -814,12 +844,12 @@ namespace СorrelationAnalysis
             string okfilename = String.Empty;
             IGetData SignA;
             IGetData SignB;
-            ClassCalcCorrelation Correlation = new ClassCalcCorrelation(CNS.Main_n.V, CNS.Main_m.V, CNS.Main_r.V, CNS.Main_Pr.V, CNS.SignA_MIN, CNS.SignA_MAX, CNS.SignB_MIN, CNS.SignB_MAX);
+            ClassCalcCorrelation Correlation = new ClassCalcCorrelation(CNS.Main_n.V, CNS.Main_m.V, CNS.Main_r.V, CNS.Main_Pr.V, CNS.SignA_MIN, CNS.SignA_MAX, CNS.SignB_MIN, CNS.SignB_MAX, CNS.Main_LimRab);
 
             switch (CNS.SignA_Type)
             {
                 case EnumTypeSource.File:
-                    SignA = new ClassGetDataFromFile(CNS.SignA_FileName);
+                    SignA = new ClassGetDataFromFile(CNS.SignA_FileName, CNS.SignA_n.V, CNS.SignA_b.V);
                     break;
 
                 case EnumTypeSource.Func:
@@ -834,7 +864,7 @@ namespace СorrelationAnalysis
             switch (CNS.SignB_Type)
             {
                 case EnumTypeSource.File:
-                    SignB = new ClassGetDataFromFile(CNS.SignB_FileName);
+                    SignB = new ClassGetDataFromFile(CNS.SignB_FileName, CNS.SignB_n.V, CNS.SignB_b.V);
                     break;
 
                 case EnumTypeSource.Func:

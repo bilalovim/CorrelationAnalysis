@@ -11,7 +11,7 @@ namespace СorrelationAnalysis
 {
     public static class Helper
     {
-        private static readonly string FileNameCNS = System.AppDomain.CurrentDomain.BaseDirectory + "CNS3.DAT";
+        private static readonly string FileNameCNS = System.AppDomain.CurrentDomain.BaseDirectory + "CNS4.DAT";
 
         private static bool SaveF(string filename, object obj)
         {

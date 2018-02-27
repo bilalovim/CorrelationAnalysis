@@ -7,8 +7,8 @@ namespace СorrelationAnalysis
     {
         private double M { get; set; }
         private double D { get; set; }
-        private int n { get; set; }
-        private double b { get; set; }
+        private int n;
+        private double b;
 
         private int i;
 

@@ -39,7 +39,7 @@
 
         <Image Stretch="None" SnapsToDevicePixels="True" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Margin="10" Source="pack://siteoforigin:,,,/Logo.png"/>
 
-        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" Margin="3">
 
             <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
                 <TextBlock Text="Сигнал A"></TextBlock>
@@ -67,23 +67,6 @@
                     </StackPanel>
 
 
-
-                    <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="b = "/>
-                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignA_b, FallbackValue=0}"/>
-
-                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="n = "/>
-                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignA_n, FallbackValue=0}"/>
-                    </StackPanel>
-
-                    <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0"  Text="max = "/>
-                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignA_MAX}"/>
-                        
-                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="min = "/>
-                        <TextBox  Width="{StaticResource ValueWidth3}" Text="{Binding SignA_MIN}"/>
-                    </StackPanel>
-
                     <StackPanel Margin="3" Orientation="Horizontal">
 
                     </StackPanel>
@@ -95,6 +78,22 @@
                     <TextBlock  Width="{StaticResource NameWidth}" TextAlignment="Right" Margin="0,0,5,0" Text="Файл:"/>
                     <TextBox Width="{StaticResource ValueWidth}" Text="{Binding SignA_FileName}" IsReadOnly="True"/>
                     <Button Content="..." Width="30" Margin="5,0,0,0" Command="{Binding CommandSelectSignA_FileName}"/>
+                </StackPanel>
+
+                <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="b = "/>
+                    <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignA_b, FallbackValue=0}"/>
+
+                    <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="n = "/>
+                    <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignA_n, FallbackValue=0}"/>
+                </StackPanel>
+
+                <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0"  Text="max = "/>
+                    <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignA_MAX}"/>
+
+                    <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="min = "/>
+                    <TextBox  Width="{StaticResource ValueWidth3}" Text="{Binding SignA_MIN}"/>
                 </StackPanel>
 
             </StackPanel>
@@ -125,24 +124,6 @@
                         <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_D, FallbackValue=20}"/>
                     </StackPanel>
 
-
-
-                    <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="b = "/>
-                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_b, FallbackValue=0}"/>
-
-                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="n = "/>
-                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_n, FallbackValue=0}"/>
-                    </StackPanel>
-
-                    <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0"  Text="max = "/>
-                        <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_MAX}"/>
-                        
-                        <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="min = "/>
-                        <TextBox  Width="{StaticResource ValueWidth3}" Text="{Binding SignB_MIN}"/>
-                    </StackPanel>
-
                     <StackPanel Margin="3" Orientation="Horizontal">
 
                     </StackPanel>
@@ -156,11 +137,27 @@
                     <Button Content="..." Width="30" Margin="5,0,0,0" Command="{Binding CommandSelectSignB_FileName}"/>
                 </StackPanel>
 
+                <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="b = "/>
+                    <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_b, FallbackValue=0}"/>
+
+                    <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="n = "/>
+                    <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_n, FallbackValue=0}"/>
+                </StackPanel>
+
+                <StackPanel Margin="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0"  Text="max = "/>
+                    <TextBox Width="{StaticResource ValueWidth3}" Text="{Binding SignB_MAX}"/>
+
+                    <TextBlock  Width="{StaticResource NameWidth3}" TextAlignment="Right" Margin="0,0,5,0" Text="min = "/>
+                    <TextBox  Width="{StaticResource ValueWidth3}" Text="{Binding SignB_MIN}"/>
+                </StackPanel>
+
             </StackPanel>
 
         </StackPanel>
 
-        <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical">
+        <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" Margin="3">
             <StackPanel Margin="5,5,0,0" Orientation="Vertical">
                 <Border BorderThickness="0,0,0,1" BorderBrush="DarkGray">
                     <TextBlock Text="Общие настройки"/>
@@ -194,6 +191,11 @@
                 <StackPanel Margin="3" Orientation="Horizontal">
                     <TextBlock  Width="{StaticResource NameWidth2}" TextAlignment="Right" Text="Pr = "/>
                     <TextBox Width="{StaticResource ValueWidth2}" Text="{Binding Main_Pr, FallbackValue=0}"/>
+                </StackPanel>
+
+                <StackPanel Margin="3" Orientation="Horizontal">
+                    <TextBlock  Width="{StaticResource NameWidth2}" TextAlignment="Right" Text="Limit Rab = "/>
+                    <TextBox Width="{StaticResource ValueWidth2}" Text="{Binding Main_LimRab, FallbackValue=0}"/>
                 </StackPanel>
             </StackPanel>
 

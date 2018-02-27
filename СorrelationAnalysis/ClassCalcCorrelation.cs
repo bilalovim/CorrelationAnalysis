@@ -19,6 +19,8 @@ namespace СorrelationAnalysis
         private RdRType Bmin;
         private RdRType Bmax;
 
+        private RdRType LimRab;
+
         private List<double> ListA = new List<double>();
         private List<double> ListAr = new List<double>();
         private List<double> ListAAr = new List<double>();
@@ -44,7 +46,7 @@ namespace СorrelationAnalysis
 
         private string[] sLevels = new[] {"L", "H", ""};
 
-        public ClassCalcCorrelation(int _n, int _m, int _r, int _pr, RdRType _Amin, RdRType _Amax, RdRType _Bmin, RdRType _Bmax)
+        public ClassCalcCorrelation(int _n, int _m, int _r, int _pr, RdRType _Amin, RdRType _Amax, RdRType _Bmin, RdRType _Bmax, RdRType _LimRab)
         {
             n = _n;
             m = _m;
@@ -55,6 +57,8 @@ namespace СorrelationAnalysis
             Amax = _Amax;
             Bmin = _Bmin;
             Bmax = _Bmax;
+
+            LimRab = _LimRab;
         }
 
         public void Calc(double A, double B)
@@ -68,6 +72,8 @@ namespace СorrelationAnalysis
             string b_level = String.Empty;
 
             WrRType Rab = new WrRType(pr);
+            string Rab_level = String.Empty;
+
             WrRType Ra = new WrRType(pr);
             WrRType Rb = new WrRType(pr);
 
@@ -127,6 +133,11 @@ namespace СorrelationAnalysis
                     {
                         double rab = (Av_AB - Av_A * Av_B) / (G_A * G_B);
                         Rab.V = rab;
+
+                        if (LimRab.Ok && Rab.V < LimRab.V)
+                        {
+                            Rab_level = "*";
+                        }
                     }
                     catch (Exception e)
                     {
@@ -171,7 +182,7 @@ namespace СorrelationAnalysis
                 }
             }
 
-            sbResult.AppendLine($"{i,-10};{a.S,-10};{a_level,-10};{b.S,-10};{b_level,-10};{Rab.S,-10};{Ra.S,-10};{Rb.S,-10}");
+            sbResult.AppendLine($"{i,-10};{a.S,-10};{a_level,-10};{b.S,-10};{b_level,-10};{Rab.S,-10};{Rab_level,-10};{Ra.S,-10};{Rb.S,-10}");
         }
 
         private double GetAv(List<double> list, int k)

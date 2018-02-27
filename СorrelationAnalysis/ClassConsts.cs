@@ -32,6 +32,7 @@ namespace СorrelationAnalysis
         public RdCType Main_r;
         public RdRType Main_T;
         public RdCType Main_Pr;
+        public RdRType Main_LimRab;
 
         public ClassConsts()
         {
@@ -59,6 +60,7 @@ namespace СorrelationAnalysis
             Main_r = new RdCType("2", 2, 0, int.MaxValue);
             Main_T = new RdRType("100", 100, Double.MinValue, Double.MaxValue, true);
             Main_Pr = new RdCType("3", 3, 1, 7);
+            Main_LimRab = new RdRType("0,80", 0.80, 0.0, 1.0, true);
         }
     }
 }

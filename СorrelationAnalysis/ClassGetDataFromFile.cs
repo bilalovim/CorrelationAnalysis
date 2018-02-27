@@ -8,8 +8,11 @@ namespace СorrelationAnalysis
     {
         private List<double> listDouble;
         private int index;
+        private int n;
+        private double b;
+        private double delta;
 
-        public ClassGetDataFromFile(string FileName)
+        public ClassGetDataFromFile(string FileName, int _n, double _b)
         {
             listDouble = new List<double>();
             var fileStream = new FileStream(FileName, FileMode.Open, FileAccess.Read);
@@ -29,11 +32,20 @@ namespace СorrelationAnalysis
                     }
                 }
             }
+
+            n = _n;
+            b = _b;
+            delta = 0;
+
+            index = 0;
         }
 
         public double GetValue()
         {
             double value = 0.0;
+
+            if (n != 0 && index >= n)
+                delta = delta + b;
 
             if (listDouble.Count > 0)
             {
@@ -50,7 +62,7 @@ namespace СorrelationAnalysis
                 }
             }
 
-            return value;
+            return value + delta;
         }
     }
 }
